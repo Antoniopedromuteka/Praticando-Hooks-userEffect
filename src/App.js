@@ -1,41 +1,40 @@
  import React from 'react';
+ import Produto from './Produto';
+
 
 
 function App() {
 
-  const [contar, setContar] = React.useState(0);
-  const [dados, setDados] = React.useState(null);
+  const [produto, setProduto] = React.useState(null); 
 
-  /*
   React.useEffect(()=>{
 
-    console.log("Executou");
+    localStorage.setItem("Produto",JSON.stringify(produto?.nome));
 
-  },[]);
+    console.log(localStorage.getItem('Produto'));
 
-  const titulo = 'total';
-  React.useEffect(()=>{
+  },[produto]);
 
-    document.title = titulo + contar;
 
-  },[contar])
-*/
+  const handleClick = (event)=>{
+
+
+    console.log(event.target.innerText);
+    fetch(`https://ranekapi.origamid.dev/json/api/produto/${event.target.innerText}`)
+    .then(response => response.json())
+    .then(json => setProduto(json))
+ 
+
+  }
   
-React.useEffect(()=>{
-
-  fetch('https://ranekapi.origamid.dev/json/api/produto/notebook')
-  .then(response => response.json())
-  .then(json => setDados(json))
-
-},[]);
-
 return (
     <div>
-      {dados && <div>
-        <h1>{dados?.nome}</h1>  
-        <p>{dados.preco}</p>
-      </div>}
-       <button onClick={()=>setContar(contar+1)}>{contar}</button>
+      {produto?.nome && <p>Preferência: {produto?.nome}</p>}
+      <button style={{marginRight: '1rem'}} onClick={handleClick}>notebook</button>
+      <button onClick={handleClick}>smartphone</button>
+
+      <Produto dados={produto} />
+      
     </div>
   );
 }
