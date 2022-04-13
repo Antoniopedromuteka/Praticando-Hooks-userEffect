@@ -7,11 +7,20 @@ function App() {
 
   const [produto, setProduto] = React.useState(null); 
 
+
   React.useEffect(()=>{
 
-    localStorage.setItem("Produto",JSON.stringify(produto?.nome));
+    const produtoLocal = JSON.parse(window.localStorage.getItem('produto'));
 
-    console.log(localStorage.getItem('Produto'));
+    if(produtoLocal !== null ) setProduto(produtoLocal);
+
+  },[]);
+
+
+
+  React.useEffect(()=>{
+
+    if(produto !== null) localStorage.setItem('produto',JSON.stringify(produto));
 
   },[produto]);
 
@@ -29,11 +38,11 @@ function App() {
   
 return (
     <div>
-      {produto?.nome && <p>Preferência: {produto?.nome}</p>}
+     <p>Preferência: {produto?.nome}</p>
       <button style={{marginRight: '1rem'}} onClick={handleClick}>notebook</button>
       <button onClick={handleClick}>smartphone</button>
 
-      <Produto dados={produto} />
+       <Produto dados={produto} /> 
       
     </div>
   );
